@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     RC_SIGN_IN);
         }
         findViewById(R.id.log_out_button).setOnClickListener(this);
+        findViewById(R.id.create_deal_button).setOnClickListener(this);
     }
 
     @Override
@@ -71,6 +72,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             finish();
                         }
                     });
+        }
+        if (view.getId() == R.id.create_deal_button) {
+            Intent intent = new Intent(this, CreateDealActivity.class);
+            startActivity(intent);
         }
     }
 }
