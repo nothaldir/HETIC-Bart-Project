@@ -3,4 +3,5 @@
     <string name="facebook_application_id" translatable="false">311360856052235</string>
     <!-- Facebook Application ID, prefixed by 'fb'.  Enables Chrome Custom tabs. -->
     <string name="facebook_login_protocol_scheme" translatable="false">fb311360856052235</string>
+    <string name="mapbox_token">pk.eyJ1IjoiaGFsZGlyIiwiYSI6ImNqYmR1MnFybTI5ZjkzM256ZXQ4emt0ZXYifQ.Qd9HESWyD7W1ka1z6H_CGg</string>
 </resources>
