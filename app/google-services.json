@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "1007831117078",
+    "firebase_url": "https://bart-51558.firebaseio.com",
+    "project_id": "bart-51558",
+    "storage_bucket": "bart-51558.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007831117078:android:732973755198840d",
+        "android_client_info": {
+          "package_name": "com.hetic.hetic_e18_bart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007831117078-31eomk583cncmjhp6lneq5mhk3u4pv9u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hetic.hetic_e18_bart",
+            "certificate_hash": "15954faf43840e101e2a93a6863898317f10691e"
+          }
+        },
+        {
+          "client_id": "1007831117078-2auq6tlfjqi58atqtcg6hjlh7gnhpuco.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWNHd_vmWiuYLS177SHWNDct2YR36-lsM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007831117078-bsomojr1jovur37uk65qmhs5dlhnhp2h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hetic.Bart"
+              }
+            },
+            {
+              "client_id": "1007831117078-2auq6tlfjqi58atqtcg6hjlh7gnhpuco.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
