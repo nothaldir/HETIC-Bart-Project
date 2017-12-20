@@ -12,7 +12,6 @@ import com.mapbox.mapboxsdk.Mapbox;
 
 public class HomeActivity extends AppCompatActivity {
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
