@@ -20,6 +20,7 @@
         </activity>
         <activity android:name=".CreateDealActivity" />
         <activity android:name=".MapActivity"></activity>
+        <activity android:name=".GeofencingActivity"></activity>
     </application>
 
 </manifest>
