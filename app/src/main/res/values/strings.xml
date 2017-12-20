@@ -4,4 +4,39 @@
     <!-- Facebook Application ID, prefixed by 'fb'.  Enables Chrome Custom tabs. -->
     <string name="facebook_login_protocol_scheme" translatable="false">fb311360856052235</string>
     <string name="mapbox_token">pk.eyJ1IjoiaGFsZGlyIiwiYSI6ImNqYmR1MnFybTI5ZjkzM256ZXQ4emt0ZXYifQ.Qd9HESWyD7W1ka1z6H_CGg</string>
+    <string name="settings">Settings</string>
+
+    <!-- Geofence permission -->
+    <string name="permission_denied_explanation">Permission was denied, but is needed for core
+        functionality.</string>
+    <string name="permission_rationale">Location permission is needed for core functionality</string>
+
+    <!-- Geofence buttons -->
+    <string name="geofences_added">Geofences added</string>
+    <string name="geofences_removed">Geofences removed</string>
+    <string name="insufficient_permissions">Insufficient permissions.</string>
+
+    <!-- Geofence error messages -->
+    <string name="unknown_geofence_error">
+        Unknown error: the Geofence service is not available now
+    </string>
+    <string name="geofence_not_available">Geofence service is not available now</string>
+    <string name="geofence_too_many_geofences">Your app has registered too many geofences</string>
+    <string name="geofence_too_many_pending_intents">
+        You have provided too many PendingIntents to the addGeofences() call
+    </string>
+    <string name="geofence_transition_invalid_type">
+        Geofence transition error: invalid transition type %1$d
+    </string>
+
+    <!-- Geofance notification msgs -->
+    <string name="geofence_transition_notification_text">
+        Click notification to return to app
+    </string>
+
+    <!-- Geofence transitions -->
+    <string name="geofence_transition_entered">Entered</string>
+    <string name="geofence_transition_exited">Exited</string>
+    <string name="unknown_geofence_transition">Unknown Transition</string>
+
 </resources>
