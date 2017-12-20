@@ -15,7 +15,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,8 +23,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateDealActivity" />
-        <activity android:name=".MapActivity"></activity>
-        <activity android:name=".GeofencingActivity"></activity>
+        <activity android:name=".GeofencingActivity" />
+        <activity android:name=".MainActivity" />
+
         <service android:name=".GeofenceTransitionsIntentService" />
     </application>
 

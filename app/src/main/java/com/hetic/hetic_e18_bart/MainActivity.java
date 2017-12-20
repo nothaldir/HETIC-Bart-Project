@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         findViewById(R.id.log_out_button).setOnClickListener(this);
         findViewById(R.id.create_deal_button).setOnClickListener(this);
-        findViewById(R.id.goto_map).setOnClickListener(this);
         findViewById(R.id.geofence_button).setOnClickListener(this);
     }
 
@@ -76,10 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         if (view.getId() == R.id.create_deal_button) {
             Intent intent = new Intent(this, CreateDealActivity.class);
-            startActivity(intent);
-        }
-        if (view.getId() == R.id.goto_map) {
-            Intent intent = new Intent(this, MapActivity.class);
             startActivity(intent);
         }
         if (view.getId() == R.id.geofence_button) {
