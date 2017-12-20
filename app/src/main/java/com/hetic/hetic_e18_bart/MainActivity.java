@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
             // not signed in
             startActivityForResult(AuthUI.getInstance()
                             .createSignInIntentBuilder()
+                            .setTheme(R.style.AppTheme)
                             .setIsSmartLockEnabled(false)
                             .setAvailableProviders(
                                     Arrays.asList(
