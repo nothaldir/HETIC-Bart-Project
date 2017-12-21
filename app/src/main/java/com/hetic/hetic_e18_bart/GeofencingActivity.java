@@ -39,26 +39,18 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
 
     private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
 
-    /**
-     * Tracks whether the user requested to add or remove geofences, or to do neither.
-     */
+    // Tracks whether the user requested to add or remove geofences, or to do neither.
     private enum PendingGeofenceTask {
         ADD, REMOVE, NONE
     }
 
-    /**
-     * Provides access to the Geofencing API.
-     */
+    // Provides access to the Geofencing API.
     private GeofencingClient mGeofencingClient;
 
-    /**
-     * The list of geofences used in this sample.
-     */
+    // The list of geofences used in this sample.
     private ArrayList<Geofence> mGeofenceList;
 
-    /**
-     * Used when requesting to add or remove geofences.
-     */
+    // Used when requesting to add or remove geofences.
     private PendingIntent mGeofencePendingIntent;
 
     // Buttons for kicking off the process of adding or removing geofences.
@@ -101,10 +93,8 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
         }
     }
 
-    /**
-     * Builds and returns a GeofencingRequest. Specifies the list of geofences to be monitored.
-     * Also specifies how the geofence notifications are initially triggered.
-     */
+    // Builds and returns a GeofencingRequest. Specifies the list of geofences to be monitored.
+    // Also specifies how the geofence notifications are initially triggered.
     private GeofencingRequest getGeofencingRequest() {
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
 
@@ -120,10 +110,8 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
         return builder.build();
     }
 
-    /**
-     * Adds geofences, which sets alerts to be notified when the device enters or exits one of the
-     * specified geofences. Handles the success or failure results returned by addGeofences().
-     */
+    // Adds geofences, which sets alerts to be notified when the device enters or exits one of the
+    // specified geofences. Handles the success or failure results returned by addGeofences().
     public void addGeofencesButtonHandler(View view) {
         if (!checkPermissions()) {
             mPendingGeofenceTask = PendingGeofenceTask.ADD;
@@ -133,10 +121,8 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
         addGeofences();
     }
 
-    /**
-     * Adds geofences. This method should be called after the user has granted the location
-     * permission.
-     */
+    // Adds geofences. This method should be called after the user has granted the location
+    // permission.
     @SuppressWarnings("MissingPermission")
     private void addGeofences() {
         if (!checkPermissions()) {
@@ -148,10 +134,8 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
                 .addOnCompleteListener(this);
     }
 
-    /**
-     * Removes geofences, which stops further notifications when the device enters or exits
-     * previously registered geofences.
-     */
+    // Removes geofences, which stops further notifications when the device enters or exits
+    // previously registered geofences.
     public void removeGeofencesButtonHandler(View view) {
         if (!checkPermissions()) {
             mPendingGeofenceTask = PendingGeofenceTask.REMOVE;
@@ -161,10 +145,8 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
         removeGeofences();
     }
 
-    /**
-     * Removes geofences. This method should be called after the user has granted the location
-     * permission.
-     */
+    // Removes geofences. This method should be called after the user has granted the location
+    // permission.
     @SuppressWarnings("MissingPermission")
     private void removeGeofences() {
         if (!checkPermissions()) {
@@ -175,11 +157,9 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
         mGeofencingClient.removeGeofences(getGeofencePendingIntent()).addOnCompleteListener(this);
     }
 
-    /**
-     * Runs when the result of calling {@link #addGeofences()} and/or {@link #removeGeofences()}
-     * is available.
-     * @param task the resulting Task, containing either a result or error.
-     */
+    // Runs when the result of calling {@link #addGeofences()} and/or {@link #removeGeofences()}
+    // is available.
+    // @param task the resulting Task, containing either a result or error.
     @Override
     public void onComplete(@NonNull Task<Void> task) {
         mPendingGeofenceTask = PendingGeofenceTask.NONE;
@@ -197,13 +177,10 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
         }
     }
 
-    /**
-     * Gets a PendingIntent to send with the request to add or remove Geofences. Location Services
-     * issues the Intent inside this PendingIntent whenever a geofence transition occurs for the
-     * current list of geofences.
-     *
-     * @return A PendingIntent for the IntentService that handles geofence transitions.
-     */
+    // Gets a PendingIntent to send with the request to add or remove Geofences. Location Services
+    // issues the Intent inside this PendingIntent whenever a geofence transition occurs for the
+    // current list of geofences.
+    // @return A PendingIntent for the IntentService that handles geofence transitions.
     private PendingIntent getGeofencePendingIntent() {
         // Reuse the PendingIntent if we already have it.
         if (mGeofencePendingIntent != null) {
@@ -215,10 +192,8 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    /**
-     * This sample hard codes geofence data. A real app might dynamically create geofences based on
-     * the user's location.
-     */
+    // This sample hard codes geofence data. A real app might dynamically create geofences based on
+    // the user's location.
     private void populateGeofenceList() {
         for (Map.Entry<String, LatLng> entry : Constants.BAY_AREA_LANDMARKS.entrySet()) {
 
@@ -263,11 +238,8 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
         }
     }
 
-    /**
-     * Shows a {@link Snackbar} using {@code text}.
-     *
-     * @param text The Snackbar text.
-     */
+    // Shows a {@link Snackbar} using {@code text}.
+    // @param text The Snackbar text.
     private void showSnackbar(final String text) {
         View container = findViewById(android.R.id.content);
         if (container != null) {
@@ -322,9 +294,7 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
         }
     }
 
-    /**
-     * Return the current state of the permissions needed.
-     */
+    // Return the current state of the permissions needed.
     private boolean checkPermissions() {
         int permissionState = ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION);
@@ -361,9 +331,7 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
         }
     }
 
-    /**
-     * Callback received when a permissions request has been completed.
-     */
+    // Callback received when a permissions request has been completed.
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
@@ -382,12 +350,6 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
                 // Notify the user via a SnackBar that they have rejected a core permission for the
                 // app, which makes the Activity useless. In a real app, core permissions would
                 // typically be best requested during a welcome-screen flow.
-
-                // Additionally, it is important to remember that a permission might have been
-                // rejected without asking the user for permission (device policy or "Never ask
-                // again" prompts). Therefore, a user interface affordance is typically implemented
-                // when permissions are denied. Otherwise, your app could appear unresponsive to
-                // touches or interactions which have required permissions.
                 showSnackbar(R.string.permission_denied_explanation, R.string.settings,
                         new View.OnClickListener() {
                             @Override
