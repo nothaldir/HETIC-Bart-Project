@@ -26,11 +26,11 @@ public class Deal {
         return deal_id;
     }
 
-    public String getDealTitre() {
+    public String getDealName() {
         return deal_name;
     }
 
-    public int getDealPrix() {
+    public int getDealPrice() {
         return deal_price;
     }
 
