@@ -51,7 +51,7 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
 
     private MapView mapView;
     private MapboxMap mMapBoxMap;
-    private MarkerOptions mMarker;
+    private MarkerOptions mMarkerPosition;
     private LatLng mLatLng;
 
     IconFactory iconFactory;
@@ -79,10 +79,10 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
             public void onMapReady(MapboxMap mapboxMap) {
                 mMapBoxMap = mapboxMap;
                 buildGoogleApiClient();
-//                mapboxMap.addMarker(new MarkerOptions()
-//                        .position(new LatLng(48.85819, 2.29458))
-//                        .title("Tour Eiffel")
-//                );
+                mapboxMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(48.85819, 2.29458))
+                        .title("ZARA - 20% sur les topsvfddddddddddddddd")
+                );
             }
         });
     }
@@ -158,11 +158,11 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
                 Log.i("Maps", "Location: " + location.getLatitude() + " " + location.getLongitude());
                 mLastLocation = location;
                 mLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                updateCamera();
-                if (mMarker != null) {
+                if (mMarkerPosition != null) {
                     updateMarker();
                 } else {
                     addMarker();
+                    updateCamera();
                 }
             }
         };
@@ -251,18 +251,15 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
     }
 
     private void updateMarker() {
-        mMapBoxMap.clear();
-        mMarker = new MarkerOptions()
-                .position(mLatLng)
-                .icon(icon);
-        mMapBoxMap.addMarker(mMarker);
+        mMarkerPosition.setPosition(mLatLng);
+//        mMapBoxMap.addMarker(mMarkerPosition);
     }
 
     private void addMarker() {
-        mMarker = new MarkerOptions()
+        mMarkerPosition = new MarkerOptions()
                 .position(mLatLng)
                 .icon(icon);
-        mMapBoxMap.addMarker(mMarker);
+        mMapBoxMap.addMarker(mMarkerPosition);
     }
 
 
