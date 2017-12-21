@@ -1,20 +1,16 @@
 package com.hetic.hetic_e18_bart;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
     private FirebaseAuth auth;
@@ -26,23 +22,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
             // already signed in
-            Log.d("AUTH", "USER LOGGED OUT");
+            Log.d("AUTH", "USER ALREADY SIGNED IN");
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            finish();
         } else {
             // not signed in
             startActivityForResult(AuthUI.getInstance()
                             .createSignInIntentBuilder()
+                            .setTheme(R.style.AppTheme)
                             .setIsSmartLockEnabled(false)
                             .setAvailableProviders(
                                     Arrays.asList(
                                             new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                             new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
                                             new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-
                             .build(),
                     RC_SIGN_IN);
         }
-        findViewById(R.id.log_out_button).setOnClickListener(this);
-        findViewById(R.id.create_deal_button).setOnClickListener(this);
     }
 
     @Override
@@ -52,30 +49,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (resultCode == RESULT_OK) {
                 // user logged in
                 Log.d("AUTH", auth.getCurrentUser().getEmail());
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                finish();
             }
             else {
                 // user not auth
                 Log.d("AUTH", "NOT AUTHENTICATED");
             }
-        }
-    }
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.log_out_button) {
-            AuthUI.getInstance()
-                    .signOut(this)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Log.d("AUTH", "USER LOGGED OUT");
-                            finish();
-                        }
-                    });
-        }
-        if (view.getId() == R.id.create_deal_button) {
-            Intent intent = new Intent(this, CreateDealActivity.class);
-            startActivity(intent);
         }
     }
 }
