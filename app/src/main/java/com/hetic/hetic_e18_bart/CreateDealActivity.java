@@ -13,9 +13,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateDealActivity extends AppCompatActivity {
 
-    EditText editTextTitre;
-    EditText editTextPrix;
-    EditText editTextDesc;
+    EditText editTextName;
+    EditText editTextPrice;
+    EditText editTextDescription;
     Button buttonCreateDeal;
 
     DatabaseReference databaseDeals;
@@ -27,9 +27,9 @@ public class CreateDealActivity extends AppCompatActivity {
 
         databaseDeals = FirebaseDatabase.getInstance().getReference("deals");
 
-        editTextTitre = (EditText)findViewById(R.id.dealTitre);
-        editTextPrix = (EditText)findViewById(R.id.dealPrice);
-        editTextDesc = (EditText)findViewById(R.id.dealDesc);
+        editTextName = (EditText)findViewById(R.id.dealName);
+        editTextPrice = (EditText)findViewById(R.id.dealPrice);
+        editTextDescription = (EditText)findViewById(R.id.dealDescription);
 
         buttonCreateDeal = (Button)findViewById(R.id.createDeal);
 
@@ -42,9 +42,9 @@ public class CreateDealActivity extends AppCompatActivity {
     }
 
     private void addDeal(){
-        String titre = editTextTitre.getText().toString();
-        int prix = Integer.parseInt(editTextPrix.getText().toString());
-        String desc = editTextDesc.getText().toString();
+        String titre = editTextName.getText().toString();
+        int prix = Integer.parseInt(editTextPrice.getText().toString());
+        String desc = editTextDescription.getText().toString();
 
             String id = databaseDeals.push().getKey();
 
