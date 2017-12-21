@@ -1,12 +1,14 @@
 package com.hetic.hetic_e18_bart;
 
-import android.*;
 import android.Manifest;
 import android.animation.TypeEvaluator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,11 +17,22 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
@@ -27,10 +40,22 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import static android.content.ContentValues.TAG;
 
-public class DealsFragment extends Fragment {
+public class DealsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+
+    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+
+    private GoogleApiClient mGoogleApiClient;
+    private FusedLocationProviderClient mFusedLocationClient;
+    LocationRequest mLocationRequest;
+    Location mLastLocation;
 
     private MapView mapView;
-    private static final int REQUEST_PERMISSIONS_REQUEST_CODE = 34;
+    private MapboxMap mMapBoxMap;
+    private MarkerOptions mMarker;
+    private LatLng mLatLng;
+
+    IconFactory iconFactory;
+    Icon icon;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,12 +67,22 @@ public class DealsFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         mapView = (MapView) getView().findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
+        getView().findViewById(R.id.center_camera_button).setOnClickListener(this);
+
+        iconFactory = IconFactory.getInstance(getActivity());
+        icon = iconFactory.fromResource(R.drawable.ic_current_position);
+
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
-                mapboxMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(48.85819, 2.29458))
-                        .title("Tour Eiffel"));
+                mMapBoxMap = mapboxMap;
+                buildGoogleApiClient();
+//                mapboxMap.addMarker(new MarkerOptions()
+//                        .position(new LatLng(48.85819, 2.29458))
+//                        .title("Tour Eiffel")
+//                );
             }
         });
     }
@@ -71,6 +106,9 @@ public class DealsFragment extends Fragment {
     public void onPause() {
         super.onPause();
         mapView.onPause();
+        if (mFusedLocationClient != null) {
+            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+        }
     }
 
     @Override
@@ -102,6 +140,49 @@ public class DealsFragment extends Fragment {
         return dealsFragment;
     }
 
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
+    }
+
+    LocationCallback mLocationCallback = new LocationCallback(){
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            Log.i("Maps", "Location Callback");
+            for (Location location : locationResult.getLocations()) {
+                Log.i("Maps", "Location: " + location.getLatitude() + " " + location.getLongitude());
+                mLastLocation = location;
+                mLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                updateCamera();
+                if (mMarker != null) {
+                    updateMarker();
+                } else {
+                    addMarker();
+                }
+            }
+        };
+    };
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onMapReady(MapboxMap mapboxMap) {
+
+    }
+
     private static class LatLngEvaluator implements TypeEvaluator<LatLng> {
         // Method is used to interpolate the marker animation.
 
@@ -117,6 +198,72 @@ public class DealsFragment extends Fragment {
         }
     }
 
+    /////////////////////////////////////
+    // Click events
+    /////////////////////////////////////
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.center_camera_button) {
+            centerCamera();
+        }
+    }
+
+
+    ////////////////////////////////////
+    // Google API Client
+    ///////////////////////////////////
+
+    private synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+        mGoogleApiClient.connect();
+    }
+
+
+    //////////////////////////////////
+    // Location related functions
+    //////////////////////////////////
+
+    private void centerCamera() {
+        CameraPosition position = new CameraPosition.Builder()
+                .target(mLatLng)
+                .zoom(15)
+                .tilt(5)
+                .build();
+        mMapBoxMap.animateCamera(CameraUpdateFactory
+        .newCameraPosition(position), 1000);
+    }
+
+    private void updateCamera() {
+        mapView.setCameraDistance(10);
+        CameraPosition position = new CameraPosition.Builder()
+                .target(mLatLng) // Sets the new camera position
+                .zoom(15) // Sets the zoom
+                .tilt(5) // Set the camera tilt
+                .build(); // Creates a CameraPosition from the builder
+
+        mMapBoxMap.animateCamera(CameraUpdateFactory
+                .newCameraPosition(position), 4000);
+    }
+
+    private void updateMarker() {
+        mMapBoxMap.clear();
+        mMarker = new MarkerOptions()
+                .position(mLatLng)
+                .icon(icon);
+        mMapBoxMap.addMarker(mMarker);
+    }
+
+    private void addMarker() {
+        mMarker = new MarkerOptions()
+                .position(mLatLng)
+                .icon(icon);
+        mMapBoxMap.addMarker(mMarker);
+    }
 
 
     ///////////////////////////////////
