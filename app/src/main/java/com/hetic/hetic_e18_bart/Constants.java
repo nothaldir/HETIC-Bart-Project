@@ -44,10 +44,7 @@ final class Constants {
         // Home
         BAY_AREA_LANDMARKS.put("HOME", new LatLng(48.844238, 2.431319));
 
-        // Home
-        BAY_AREA_LANDMARKS.put("HOME2", new LatLng(48.844238, 2.431312));
-
-        // Home
-        BAY_AREA_LANDMARKS.put("HOME3", new LatLng(48.844238, 2.431315));
+        // HETIC
+        BAY_AREA_LANDMARKS.put("HETIC", new LatLng(48.851804, 2.420575));
     }
 }
