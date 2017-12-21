@@ -9,12 +9,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
+
+    FirebaseUser user;
+    String userName;
+
+    TextView textView_name;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,6 +34,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         getView().findViewById(R.id.log_out_button).setOnClickListener(this);
         getView().findViewById(R.id.geofence_button).setOnClickListener(this);
+        getView().findViewById(R.id.edit_button).setOnClickListener(this);
+
+        textView_name = (TextView) getView().findViewById(R.id.textView_name);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userName = user.getDisplayName();
+
+        textView_name.setText(userName);
+
     }
 
 
@@ -50,6 +67,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         }
         if (view.getId() == R.id.geofence_button) {
             Intent intent = new Intent(getActivity(), GeofencingActivity.class);
+            startActivity(intent);
+        }
+        if (view.getId() == R.id.edit_button) {
+            Intent intent = new Intent(getActivity(), EditActivity.class);
+
             startActivity(intent);
         }
     }

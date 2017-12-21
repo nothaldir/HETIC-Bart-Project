@@ -25,7 +25,10 @@
         <activity android:name=".CreateDealActivity" />
         <activity android:name=".GeofencingActivity" />
         <activity android:name=".HomeActivity" />
+
         <service android:name=".GeofenceTransitionsIntentService" />
+
+        <activity android:name=".EditActivity"></activity>
     </application>
 
 </manifest>
