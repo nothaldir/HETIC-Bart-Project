@@ -44,11 +44,12 @@ public class HomeActivity extends AppCompatActivity {
         Mapbox.getInstance(this, getString(R.string.mapbox_token));
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setSelectedItemId(R.id.navigation_deals);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_layout, ListFragment.newInstance());
+        transaction.replace(R.id.frame_layout, DealsFragment.newInstance());
         transaction.commit();
     }
 }
