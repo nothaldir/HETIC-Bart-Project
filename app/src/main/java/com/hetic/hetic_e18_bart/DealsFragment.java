@@ -28,6 +28,8 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraPosition;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
@@ -52,6 +54,9 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
     private MarkerOptions mMarker;
     private LatLng mLatLng;
 
+    IconFactory iconFactory;
+    Icon icon;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -65,6 +70,9 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         getView().findViewById(R.id.center_camera_button).setOnClickListener(this);
+
+        iconFactory = IconFactory.getInstance(getActivity());
+        icon = iconFactory.fromResource(R.drawable.ic_current_position);
 
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
@@ -246,16 +254,14 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         mMapBoxMap.clear();
         mMarker = new MarkerOptions()
                 .position(mLatLng)
-                .title("Location")
-                .snippet("Welcome to you");
+                .icon(icon);
         mMapBoxMap.addMarker(mMarker);
     }
 
     private void addMarker() {
         mMarker = new MarkerOptions()
                 .position(mLatLng)
-                .title("Location")
-                .snippet("Welcome to you");
+                .icon(icon);
         mMapBoxMap.addMarker(mMarker);
     }
 
