@@ -195,7 +195,7 @@ public class GeofencingActivity extends AppCompatActivity implements OnCompleteL
     // This sample hard codes geofence data. A real app might dynamically create geofences based on
     // the user's location.
     private void populateGeofenceList() {
-        for (Map.Entry<String, LatLng> entry : Constants.BAY_AREA_LANDMARKS.entrySet()) {
+        for (Map.Entry<String, LatLng> entry : Constants.LANDMARKS.entrySet()) {
 
             mGeofenceList.add(new Geofence.Builder()
                     // Set the request ID of the geofence. This is a string to identify this

@@ -2,7 +2,6 @@ package com.hetic.hetic_e18_bart;
 
 import android.Manifest;
 import android.animation.TypeEvaluator;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -51,7 +50,7 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
 
     private MapView mapView;
     private MapboxMap mMapBoxMap;
-    private MarkerOptions mMarker;
+    private MarkerOptions mMarkerPosition;
     private LatLng mLatLng;
 
     IconFactory iconFactory;
@@ -79,10 +78,18 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
             public void onMapReady(MapboxMap mapboxMap) {
                 mMapBoxMap = mapboxMap;
                 buildGoogleApiClient();
-//                mapboxMap.addMarker(new MarkerOptions()
-//                        .position(new LatLng(48.85819, 2.29458))
-//                        .title("Tour Eiffel")
-//                );
+                mapboxMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(48.849088, 2.422309))
+                        .title("ZARA - 20% sur les tops")
+                );
+                mapboxMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(48.850859, 2.420390))
+                        .title("MONOPRIX - 5% sur les bières")
+                );
+                mapboxMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(48.852979, 2.418117))
+                        .title("LA POSTE - +5% sur les enveloppes")
+                );
             }
         });
     }
@@ -140,17 +147,19 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         return dealsFragment;
     }
 
-    @SuppressLint("MissingPermission")
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
 
-    LocationCallback mLocationCallback = new LocationCallback(){
+    LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Log.i("Maps", "Location Callback");
@@ -158,14 +167,16 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
                 Log.i("Maps", "Location: " + location.getLatitude() + " " + location.getLongitude());
                 mLastLocation = location;
                 mLatLng = new LatLng(location.getLatitude(), location.getLongitude());
-                updateCamera();
-                if (mMarker != null) {
+                if (mMarkerPosition != null) {
                     updateMarker();
                 } else {
                     addMarker();
+                    updateCamera();
                 }
             }
-        };
+        }
+
+        ;
     };
 
     @Override
@@ -232,10 +243,11 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         CameraPosition position = new CameraPosition.Builder()
                 .target(mLatLng)
                 .zoom(15)
+                .bearing(0)
                 .tilt(5)
                 .build();
         mMapBoxMap.animateCamera(CameraUpdateFactory
-        .newCameraPosition(position), 1000);
+                .newCameraPosition(position), 1000);
     }
 
     private void updateCamera() {
@@ -243,6 +255,7 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         CameraPosition position = new CameraPosition.Builder()
                 .target(mLatLng) // Sets the new camera position
                 .zoom(15) // Sets the zoom
+                .bearing(0) // Sets the rotation
                 .tilt(5) // Set the camera tilt
                 .build(); // Creates a CameraPosition from the builder
 
@@ -251,18 +264,15 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
     }
 
     private void updateMarker() {
-        mMapBoxMap.clear();
-        mMarker = new MarkerOptions()
-                .position(mLatLng)
-                .icon(icon);
-        mMapBoxMap.addMarker(mMarker);
+        mMarkerPosition.setPosition(mLatLng);
+//        mMapBoxMap.addMarker(mMarkerPosition);
     }
 
     private void addMarker() {
-        mMarker = new MarkerOptions()
+        mMarkerPosition = new MarkerOptions()
                 .position(mLatLng)
                 .icon(icon);
-        mMapBoxMap.addMarker(mMarker);
+        mMapBoxMap.addMarker(mMarkerPosition);
     }
 
 
@@ -348,7 +358,10 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
                 Log.i(TAG, "User interaction was cancelled.");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.i(TAG, "Permission granted.");
-                // performPendingGeofenceTask();
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
             } else {
                 Log.i(TAG, "Permission denied by user");
                 // Permission denied.
