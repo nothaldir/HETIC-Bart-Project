@@ -40,10 +40,10 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1007831117078-6vhdavmdfdroirad9dg3btg20lcba9tj.apps.googleusercontent.com",
+              "client_id": "1007831117078-bsomojr1jovur37uk65qmhs5dlhnhp2h.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.hetic.BartDebug"
+                "bundle_id": "com.hetic.Bart"
               }
             },
             {
@@ -51,37 +51,6 @@
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1007831117078:android:9cdbeb956b947e3c",
-        "android_client_info": {
-          "package_name": "com.hetic.hetic_e18_bart_debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "1007831117078-2auq6tlfjqi58atqtcg6hjlh7gnhpuco.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCWNHd_vmWiuYLS177SHWNDct2YR36-lsM"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2
