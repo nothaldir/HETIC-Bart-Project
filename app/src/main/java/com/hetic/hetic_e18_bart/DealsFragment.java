@@ -73,10 +73,6 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         iconFactory = IconFactory.getInstance(getActivity());
         icon = iconFactory.fromResource(R.drawable.ic_current_position);
 
-        if (!checkPermissions()) {
-            requestPermissions();
-        }
-
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
@@ -163,7 +159,7 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
 
-    LocationCallback mLocationCallback = new LocationCallback(){
+    LocationCallback mLocationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Log.i("Maps", "Location Callback");
@@ -178,7 +174,9 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
                     updateCamera();
                 }
             }
-        };
+        }
+
+        ;
     };
 
     @Override
@@ -249,7 +247,7 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
                 .tilt(5)
                 .build();
         mMapBoxMap.animateCamera(CameraUpdateFactory
-        .newCameraPosition(position), 1000);
+                .newCameraPosition(position), 1000);
     }
 
     private void updateCamera() {
@@ -360,7 +358,10 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
                 Log.i(TAG, "User interaction was cancelled.");
             } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.i(TAG, "Permission granted.");
-                // performPendingGeofenceTask();
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
             } else {
                 Log.i(TAG, "Permission denied by user");
                 // Permission denied.
