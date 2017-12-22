@@ -2,7 +2,6 @@ package com.hetic.hetic_e18_bart;
 
 import android.Manifest;
 import android.animation.TypeEvaluator;
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -74,6 +73,10 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         iconFactory = IconFactory.getInstance(getActivity());
         icon = iconFactory.fromResource(R.drawable.ic_current_position);
 
+        if (!checkPermissions()) {
+            requestPermissions();
+        }
+
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
@@ -93,10 +96,6 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
                 );
             }
         });
-    }
-
-    private void buildMarkersFromJSON() {
-
     }
 
     @Override
@@ -152,13 +151,15 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         return dealsFragment;
     }
 
-    @SuppressLint("MissingPermission")
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
 
