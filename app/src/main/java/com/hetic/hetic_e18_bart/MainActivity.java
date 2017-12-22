@@ -29,16 +29,17 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // not signed in
             startActivityForResult(AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setTheme(R.style.AppTheme)
-                            .setIsSmartLockEnabled(false)
-                            .setAvailableProviders(
-                                    Arrays.asList(
-                                            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                            new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
-                                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                            .build(),
-                    RC_SIGN_IN);
+                .createSignInIntentBuilder()
+                .setTheme(R.style.AppTheme)
+                .setIsSmartLockEnabled(false)
+                .setLogo(R.mipmap.ic_launcher_foreground)
+                .setAvailableProviders(
+                    Arrays.asList(
+                        new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
+                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                .build(),
+            RC_SIGN_IN);
         }
     }
 

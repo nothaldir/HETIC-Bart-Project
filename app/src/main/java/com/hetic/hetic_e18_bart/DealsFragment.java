@@ -80,11 +80,23 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
                 mMapBoxMap = mapboxMap;
                 buildGoogleApiClient();
                 mapboxMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(48.85819, 2.29458))
-                        .title("ZARA - 20% sur les topsvfddddddddddddddd")
+                        .position(new LatLng(48.849088, 2.422309))
+                        .title("ZARA - 20% sur les tops")
+                );
+                mapboxMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(48.850859, 2.420390))
+                        .title("MONOPRIX - 5% sur les bières")
+                );
+                mapboxMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(48.852979, 2.418117))
+                        .title("LA POSTE - +5% sur les enveloppes")
                 );
             }
         });
+    }
+
+    private void buildMarkersFromJSON() {
+
     }
 
     @Override
@@ -232,6 +244,7 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         CameraPosition position = new CameraPosition.Builder()
                 .target(mLatLng)
                 .zoom(15)
+                .bearing(0)
                 .tilt(5)
                 .build();
         mMapBoxMap.animateCamera(CameraUpdateFactory
@@ -243,6 +256,7 @@ public class DealsFragment extends Fragment implements OnMapReadyCallback, Googl
         CameraPosition position = new CameraPosition.Builder()
                 .target(mLatLng) // Sets the new camera position
                 .zoom(15) // Sets the zoom
+                .bearing(0) // Sets the rotation
                 .tilt(5) // Set the camera tilt
                 .build(); // Creates a CameraPosition from the builder
 
